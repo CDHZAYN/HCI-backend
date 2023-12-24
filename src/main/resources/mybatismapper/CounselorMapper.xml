@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.hci.dao.CounselorMapper">
+<resultMap id="BaseResultMap" type="com.example.hci.dao.dto.Counselor">
+    <result column="name" property="name"/>
+    <result column="sex" property="sex"/>
+    <result column="position" property="position"/>
+    <result column="location" property="location"/>
+    <result column="introduction" property="introduction"/>
+    <result column="field" property="field"/>
+    <result column="method" property="method"/>
+    <result column="price" property="price"/>
+    <result column="poison" property="poison"/>
+    <result column="profile" property="profile"/>
+    <result column="basic" property="basic"/>
+</resultMap>
+    <select id="selectCounselorList" resultType="com.example.hci.dao.dto.Counselor">
+        select *
+        from counselor
+        where 1=1
+        <if test="ew.nonEmptyOfWhere">AND ${ew.sqlSegment}</if>
+        <if test=" fieldLabel != null">  and #{fieldLabel} in (select counselor_field.field from counselor_field where counselor.id = counselor_field.counselorId)</if>
+        <if test=" form != null"> and #{form} in (select counselor_form.form from counselor_form where counselor.id = counselor_form.counselorId) </if>
+        order by position desc limit ${skip},8;
+    </select>
+</mapper>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.hci.dao.UserCounselorMapper">
+    <select id="getBookRecord" resultType="com.example.hci.dao.dto.UserCounselor">
+        select user_counselor.*, counselor_book.startTime date
+        from user_counselor, counselor_book
+        where userId = ${userId}
+        <if test="type !=0">    and type = ${type} </if>
+        and user_counselor.counselorBookId = counselor_book.id and counselor_book.startTime &lt; #{date} order by date desc limit 10
+    </select>
+</mapper>

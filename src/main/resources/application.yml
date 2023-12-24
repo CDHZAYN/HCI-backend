@@ -1,0 +1,41 @@
+server:
+  port: 8080
+spring:
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    dynamic:
+      primary: mysql
+      datasource:
+        mysql:
+          url: jdbc:mysql://1.15.223.250:3306/hci?useUnicode=true&characterEncoding=UTF8&rewriteBatchedStatements=true&allowMultiQueries=true&serverTimezone=Asia/Shanghai
+          username: hbj
+          password: Hbj13270069828!
+          driver-class-name: com.mysql.cj.jdbc.Driver
+  mail:
+    host: smtp.qq.com
+    username: 2945624509@qq.com # 发件人邮箱
+    password: tdsbowfrzcqedghd # 邮箱授权码
+    default-encoding: UTF-8
+mybatis-plus:
+  mapper-locations: classpath*:/mybatismapper/*Mapper.xml
+  typeAliasesPackage: com.example.hci.dao.dto
+  global-config:
+    #主键类型 0:"数据库ID自增", 1:"用户输入ID", 2:"全局唯一ID(数字类型唯一ID)", 3:"全局唯一ID UUID";
+    id-type: 0
+    # 字段策略 0:"忽略判断", 1:"非NULL判断", 2:"非空判断"
+    field-strategy: 2
+    # 驼峰下划线转换
+    db-column-underline: false
+    refresh-mapper: true
+    # 逻辑删除配置
+    logic-delete-value: 1
+    logic-not-delete-value: 0
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    map-underscore-to-camel-case: true
+    cache-enabled: false
+jwt:
+  secret: 6e12d69c-af21-4cc2-b32d-3fa949b50106
+  expire: 86400000
+
+
