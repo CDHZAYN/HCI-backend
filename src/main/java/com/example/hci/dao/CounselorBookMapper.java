@@ -10,6 +10,6 @@ public interface CounselorBookMapper extends BaseMapper<CounselorBook> {
 
     List<CounselorBook> getCounselorBookList(@Param("counselorId") List<Integer> counselorId, @Param("date") String date, @Param("form") String form);
 
-    @Select("SELECT * FROM counselor_book WHERE startTime >= CURDATE() and startTime <= ADDDATE(CURDATE(), 14) AND name like '%${type}%'")
+    @Select("SELECT * FROM counselor_book WHERE startTime >= CURDATE() and startTime <= ADDDATE(CURDATE(), 14) AND name like '%${type}'")
     List<CounselorBook> getCounselorBookDate(@Param("type") String type);
 }
