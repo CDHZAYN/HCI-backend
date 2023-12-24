@@ -110,54 +110,48 @@ public class UserServiceImpl extends BaseServiceImpl<UserMapper, User> implement
     }
 
     @Override
-    public UserBookVO getBookRecord(Integer userId, Integer type, String date) {
-        List<UserEvent> userEvents = userEventMapper.getBookRecord(userId, type, date);
-        List<UserCounselor> userCounselors = userCounselorMapper.getBookRecord(userId, type, date);
-        List<UserCounselorBookVO> resCounselor = new ArrayList<>();
-        List<UserEventBookVO> resEvent = new ArrayList<>();
-        int temp = 0;
-        int tempE = 0;
-        int tempC = 0;
-        while (temp < 10) {
-            if (tempC >= userCounselors.size() && tempE >= userEvents.size()) {
-                break;
-            } else if (tempC >= userCounselors.size()) {
-                UserEventBookVO userEventBookVO = new UserEventBookVO();
-                userEventBookVO.setUserEvent(userEvents.get(tempE));
-                resEvent.add(userEventBookVO);
-                tempE++;
-            } else if (tempE >= userEvents.size()) {
-                UserCounselorBookVO userCounselorBookVO = new UserCounselorBookVO();
-                userCounselorBookVO.setUserCounselor(userCounselors.get(tempC));
-                resCounselor.add(userCounselorBookVO);
-                tempC++;
-            } else {
-                if (userEvents.get(tempE).getDate().compareTo(userCounselors.get(tempC).getDate()) > 0) {
-                    UserEventBookVO userEventBookVO = new UserEventBookVO();
-                    userEventBookVO.setUserEvent(userEvents.get(tempE));
-                    resEvent.add(userEventBookVO);
-                    tempE++;
-                } else {
-                    UserCounselorBookVO userCounselorBookVO = new UserCounselorBookVO();
-                    userCounselorBookVO.setUserCounselor(userCounselors.get(tempC));
-                    resCounselor.add(userCounselorBookVO);
-                    tempC++;
+    public BookRecordVO getBookRecord(Integer userId, Integer type, String date, String bookType) {
+        List<UserBookVO> res = new ArrayList<>();
+        if(StringUtils.isEmpty(bookType)){
+            List<UserEvent> userEvents = userEventMapper.getBookRecord(userId, type, date);
+            List<UserCounselor> userCounselors = userCounselorMapper.getBookRecord(userId, type, date, bookType);
+            List<UserBook> books  = new ArrayList<>(userEvents);
+            books.addAll(userCounselors);
+            Collections.sort(books, (o1, o2) -> o2.getDate().compareTo(o1.getDate()));
+            for(int i= 0; i< 10; i++){
+                UserBookVO userBookVO = new UserBookVO();
+                userBookVO.setUserBook(books.get(i));
+                if(books.get(i) instanceof UserEvent){
+                    userBookVO.setBook(eventBookMapper.selectById(((UserEvent) books.get(i)).getEventId()));
+                    userBookVO.setUserFellowId(userEventMapper.getUserEventFellow(((UserEvent) books.get(i)).getEventId(),((UserEvent) books.get(i)).getUserId()));
+                }else{
+                    userBookVO.setBook(counselorBookMapper.selectById(((UserCounselor) books.get(i)).getCounselorBookId()));
+                    userBookVO.setUserFellowId(userCounselorMapper.getUserCounselorFellow(((UserCounselor) books.get(i)).getCounselorBookId(),((UserCounselor) books.get(i)).getUserId()));
                 }
+                res.add(userBookVO);
             }
-            temp++;
+        }else if(bookType.equals("活动预约")){
+            List<UserEvent> userEvents = userEventMapper.getBookRecord(userId, type, date);
+            for(UserEvent userEvent: userEvents){
+                UserBookVO userBookVO = new UserBookVO();
+                userBookVO.setUserBook(userEvent);
+                userBookVO.setBook(eventBookMapper.selectById(userEvent.getEventId()));
+                userBookVO.setUserFellowId(userEventMapper.getUserEventFellow(userEvent.getEventId(),userEvent.getUserId()));
+                res.add(userBookVO);
+            }
+        }else{
+            List<UserCounselor> userCounselors = userCounselorMapper.getBookRecord(userId, type, date, bookType);
+            for(UserCounselor userCounselor: userCounselors) {
+                UserBookVO userBookVO = new UserBookVO();
+                userBookVO.setUserBook(userCounselor);
+                userBookVO.setBook(counselorBookMapper.selectById(userCounselor.getCounselorBookId()));
+                userBookVO.setUserFellowId(userCounselorMapper.getUserCounselorFellow(userCounselor.getCounselorBookId(), userCounselor.getUserId()));
+                res.add(userBookVO);
+            }
         }
-        for (UserEventBookVO userEventBookVO : resEvent) {
-            userEventBookVO.setEventBook(eventBookMapper.selectById(userEventBookVO.getUserEvent().getEventId()));
-            userEventBookVO.setUserFellowId(userEventMapper.getUserEventFellow(userEventBookVO.getUserEvent().getEventId(), userEventBookVO.getUserEvent().getUserId()));
-        }
-        for (UserCounselorBookVO userCounselorBookVO : resCounselor) {
-            userCounselorBookVO.setCounselorBook(counselorBookMapper.selectById(userCounselorBookVO.getUserCounselor().getCounselorBookId()));
-            userCounselorBookVO.setUserFellowId(userCounselorMapper.getUserCounselorFellow(userCounselorBookVO.getUserCounselor().getCounselorBookId(), userCounselorBookVO.getUserCounselor().getUserId()));
-        }
-        UserBookVO userBookVO = new UserBookVO();
-        userBookVO.setUserCounselorBookVOS(resCounselor);
-        userBookVO.setUserEventBookVOS(resEvent);
-        return userBookVO;
+        BookRecordVO bookRecordVO = new BookRecordVO();
+        bookRecordVO.setBookRecord(res);
+        return bookRecordVO;
     }
 
     @Override

@@ -1,6 +1,7 @@
 package com.example.hci.service;
 
 import com.example.hci.VO.AccountVO;
+import com.example.hci.VO.BookRecordVO;
 import com.example.hci.VO.UserBookVO;
 import com.example.hci.VO.UserVO;
 import com.example.hci.controller.dto.RegisterDTO;
@@ -16,7 +17,7 @@ public interface IUserService extends BaseService<User>{
 
     void changeUserPwd(UserChangePwdDTO input);
 
-    UserBookVO getBookRecord(Integer userId, Integer type, String date);
+    BookRecordVO getBookRecord(Integer userId, Integer type, String date, String bookType);
 
     AccountVO getAccount(Integer userId);
 }

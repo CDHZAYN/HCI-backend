@@ -9,7 +9,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @TableName("counselor_book")
-public class CounselorBook extends Entity {
+public class CounselorBook extends Book {
 
     @TableField("counselorId")
     private Integer counselorId;

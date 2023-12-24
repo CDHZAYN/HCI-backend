@@ -9,7 +9,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @TableName("user_counselor")
-public class UserCounselor extends Entity {
+public class UserCounselor extends UserBook {
 
     @TableField("userId")
     private Integer userId;
@@ -47,9 +47,4 @@ public class UserCounselor extends Entity {
 
     @TableField("cancel")
     private String cancel;
-    /**
-     * 预约开始时间
-     */
-    @TableField(exist = false)
-    private String date;
 }

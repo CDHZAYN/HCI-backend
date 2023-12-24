@@ -9,7 +9,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @TableName("event_book")
-public class EventBook extends Entity {
+public class EventBook extends Book {
 
     @TableField("name")
     private String name;

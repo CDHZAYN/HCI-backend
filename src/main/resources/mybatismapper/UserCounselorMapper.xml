@@ -5,7 +5,8 @@
         select user_counselor.*, counselor_book.startTime date
         from user_counselor, counselor_book
         where userId = ${userId}
-        <if test="type !=0">    and type = ${type} </if>
+        <if test="type != null">    and type = ${type} </if>
+        <if test="bookType != null"> and name like '%${bookType}'</if>
         and user_counselor.counselorBookId = counselor_book.id and counselor_book.startTime &lt; #{date} order by date desc limit 10
     </select>
 </mapper>

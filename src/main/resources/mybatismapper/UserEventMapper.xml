@@ -5,7 +5,7 @@
         select user_event.*, event_book.startTime date
         from user_event, event_book
         where userId = ${userId}
-        <if test="type !=0">    and type = ${type} </if>
+        <if test="type !=null">    and type = ${type} </if>
         and user_event.eventId = event_book.id and event_book.startTime &lt; #{date} order by date desc limit 10
     </select>
 </mapper>

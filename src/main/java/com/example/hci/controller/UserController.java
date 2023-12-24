@@ -2,6 +2,7 @@ package com.example.hci.controller;
 
 
 import com.example.hci.VO.AccountVO;
+import com.example.hci.VO.BookRecordVO;
 import com.example.hci.VO.UserBookVO;
 import com.example.hci.VO.UserVO;
 import com.example.hci.common.Response;
@@ -52,8 +53,8 @@ public class UserController {
     }
 
     @GetMapping("/bookRecord")
-    public Response getBookRecord(@RequestParam Integer userId, @RequestParam Integer type, @RequestParam String date) {
-        UserBookVO userBookVO = service.getBookRecord(userId, type, date);
-        return Response.buildSuccess(userBookVO);
+    public Response getBookRecord(@RequestParam Integer userId, @RequestParam Integer type, @RequestParam String date, @RequestParam String bookType) {
+        BookRecordVO bookRecord = service.getBookRecord(userId, type, date, bookType);
+        return Response.buildSuccess(bookRecord);
     }
 }

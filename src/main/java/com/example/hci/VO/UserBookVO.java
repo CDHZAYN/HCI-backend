@@ -1,5 +1,7 @@
 package com.example.hci.VO;
 
+import com.example.hci.dao.dto.Book;
+import com.example.hci.dao.dto.UserBook;
 import lombok.Data;
 
 import java.util.List;
@@ -7,7 +9,9 @@ import java.util.List;
 @Data
 public class UserBookVO {
 
-    private List<UserEventBookVO> userEventBookVOS;
+    private Book book;
 
-    private List<UserCounselorBookVO> userCounselorBookVOS;
+    private UserBook userBook;
+
+    private List<Integer> userFellowId;
 }
