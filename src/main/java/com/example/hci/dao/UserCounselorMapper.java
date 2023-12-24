@@ -11,6 +11,6 @@ public interface UserCounselorMapper extends BaseMapper<UserCounselor> {
 
     List<UserCounselor> getBookRecord(@Param("userId") Integer userId, @Param("type") Integer type, @Param("date") String date);
 
-    @Select("select fellowId from counselor_fellow where eventId = ${eventId} and ${userId} = userId")
-    List<Integer> getUserCounselorFellow(@Param("eventId") Integer eventId, @Param("userId") Integer userId);
+    @Select("select fellowId from counselor_fellow where counselorBookId = ${counselorBookId} and ${userId} = userId")
+    List<Integer> getUserCounselorFellow(@Param("counselorBookId") Integer eventId, @Param("userId") Integer userId);
 }
