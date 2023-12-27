@@ -23,7 +23,7 @@ public interface IEventBookService extends BaseService<EventBook> {
 
     void cancel(EventBookCancelDTO input);
 
-    List<String> date();
+    List<String> date(Integer userId);
 
     void finishUserEvent();
 }

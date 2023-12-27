@@ -194,8 +194,8 @@ public class EventBookServiceImpl extends BaseServiceImpl<EventBookMapper, Event
     }
 
     @Override
-    public List<String> date() {
-        List<EventBook> temp = mapper.getEventDate();
+    public List<String> date(Integer userId) {
+        List<EventBook> temp = mapper.getEventDate(userId);
         Set<String> set = new HashSet<>();
         for (EventBook eventBook : temp) {
             set.add(eventBook.getStartTime().substring(0, 10));

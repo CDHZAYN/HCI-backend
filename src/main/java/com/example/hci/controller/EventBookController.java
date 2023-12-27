@@ -56,8 +56,8 @@ public class EventBookController {
     }
 
     @GetMapping("/date")
-    public Response date() {
-        List<String> dates = service.date();
+    public Response date(@RequestParam Integer userId) {
+        List<String> dates = service.date(userId);
         return Response.buildSuccess(dates);
     }
 }
