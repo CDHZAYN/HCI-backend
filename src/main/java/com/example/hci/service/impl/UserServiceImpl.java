@@ -41,6 +41,12 @@ public class UserServiceImpl extends BaseServiceImpl<UserMapper, User> implement
     @Resource
     private CounselorBookMapper counselorBookMapper;
 
+    @Resource
+    private CounselorMapper counselorMapper;
+
+    @Resource
+    private FellowMapper fellowMapper;
+
     @Override
     public UserVO login(String username, String email, String password) {
         QueryWrapper<User> ew = new QueryWrapper<>();
@@ -118,15 +124,44 @@ public class UserServiceImpl extends BaseServiceImpl<UserMapper, User> implement
             List<UserBook> books  = new ArrayList<>(userEvents);
             books.addAll(userCounselors);
             Collections.sort(books, (o1, o2) -> o2.getDate().compareTo(o1.getDate()));
-            for(int i= 0; i< 10; i++){
+            int target = Math.min(10, books.size());
+            for(int i= 0; i< target; i++){
                 UserBookVO userBookVO = new UserBookVO();
                 userBookVO.setUserBook(books.get(i));
                 if(books.get(i) instanceof UserEvent){
-                    userBookVO.setBook(eventBookMapper.selectById(((UserEvent) books.get(i)).getEventId()));
-                    userBookVO.setUserFellowId(userEventMapper.getUserEventFellow(((UserEvent) books.get(i)).getEventId(),((UserEvent) books.get(i)).getUserId()));
+                    EventBook eventBook = eventBookMapper.selectById(((UserEvent) books.get(i)).getEventId());
+                    Counselor c = counselorMapper.selectById(eventBook.getCounselorId());
+                    eventBook.setLocation(c.getLocation());
+                    eventBook.setProfile(c.getProfile());
+                    userBookVO.setBook(eventBook);
+                    List<Integer> fellowId = userEventMapper.getUserEventFellow(((UserEvent) books.get(i)).getEventId(),((UserEvent) books.get(i)).getUserId());
+                    List<FellowBriefVO> fellowBriefVOS = new ArrayList<>();
+                    for(int j= 0; j<fellowId.size(); j++) {
+                        FellowBriefVO fellowBriefVO = new FellowBriefVO();
+                        fellowBriefVO.setFellowId(fellowId.get(j));
+                        Fellow f = fellowMapper.selectById(fellowId.get(j));
+                        fellowBriefVO.setNickname(f.getNickname());
+                        fellowBriefVO.setNote(f.getNote());
+                        fellowBriefVOS.add(fellowBriefVO);
+                    }
+                    userBookVO.setUserFellow(fellowBriefVOS);
                 }else{
-                    userBookVO.setBook(counselorBookMapper.selectById(((UserCounselor) books.get(i)).getCounselorBookId()));
-                    userBookVO.setUserFellowId(userCounselorMapper.getUserCounselorFellow(((UserCounselor) books.get(i)).getCounselorBookId(),((UserCounselor) books.get(i)).getUserId()));
+                    CounselorBook counselorBook = counselorBookMapper.selectById(((UserCounselor) books.get(i)).getCounselorBookId());
+                    Counselor c = counselorMapper.selectById(counselorBook.getCounselorId());
+                    counselorBook.setLocation(c.getLocation());
+                    counselorBook.setProfile(c.getProfile());
+                    userBookVO.setBook(counselorBook);
+                    List<Integer> fellowId = userCounselorMapper.getUserCounselorFellow(((UserCounselor) books.get(i)).getCounselorBookId(),((UserCounselor) books.get(i)).getUserId());
+                    List<FellowBriefVO> fellowBriefVOS = new ArrayList<>();
+                    for(int j= 0; j<fellowId.size(); j++) {
+                        FellowBriefVO fellowBriefVO = new FellowBriefVO();
+                        fellowBriefVO.setFellowId(fellowId.get(j));
+                        Fellow f = fellowMapper.selectById(fellowId.get(j));
+                        fellowBriefVO.setNickname(f.getNickname());
+                        fellowBriefVO.setNote(f.getNote());
+                        fellowBriefVOS.add(fellowBriefVO);
+                    }
+                    userBookVO.setUserFellow(fellowBriefVOS);
                 }
                 res.add(userBookVO);
             }
@@ -135,8 +170,22 @@ public class UserServiceImpl extends BaseServiceImpl<UserMapper, User> implement
             for(UserEvent userEvent: userEvents){
                 UserBookVO userBookVO = new UserBookVO();
                 userBookVO.setUserBook(userEvent);
-                userBookVO.setBook(eventBookMapper.selectById(userEvent.getEventId()));
-                userBookVO.setUserFellowId(userEventMapper.getUserEventFellow(userEvent.getEventId(),userEvent.getUserId()));
+                EventBook eventBook = eventBookMapper.selectById(userEvent.getEventId());
+                Counselor c = counselorMapper.selectById(eventBook.getCounselorId());
+                eventBook.setLocation(c.getLocation());
+                eventBook.setProfile(c.getProfile());
+                userBookVO.setBook(eventBook);
+                List<Integer> fellowId = userEventMapper.getUserEventFellow(userEvent.getEventId(),userEvent.getUserId());
+                List<FellowBriefVO> fellowBriefVOS = new ArrayList<>();
+                for(int j= 0; j<fellowId.size(); j++) {
+                    FellowBriefVO fellowBriefVO = new FellowBriefVO();
+                    fellowBriefVO.setFellowId(fellowId.get(j));
+                    Fellow f = fellowMapper.selectById(fellowId.get(j));
+                    fellowBriefVO.setNickname(f.getNickname());
+                    fellowBriefVO.setNote(f.getNote());
+                    fellowBriefVOS.add(fellowBriefVO);
+                }
+                userBookVO.setUserFellow(fellowBriefVOS);
                 res.add(userBookVO);
             }
         }else{
@@ -144,8 +193,22 @@ public class UserServiceImpl extends BaseServiceImpl<UserMapper, User> implement
             for(UserCounselor userCounselor: userCounselors) {
                 UserBookVO userBookVO = new UserBookVO();
                 userBookVO.setUserBook(userCounselor);
-                userBookVO.setBook(counselorBookMapper.selectById(userCounselor.getCounselorBookId()));
-                userBookVO.setUserFellowId(userCounselorMapper.getUserCounselorFellow(userCounselor.getCounselorBookId(), userCounselor.getUserId()));
+                CounselorBook counselorBook = counselorBookMapper.selectById(userCounselor.getCounselorBookId());
+                Counselor c = counselorMapper.selectById(counselorBook.getCounselorId());
+                counselorBook.setLocation(c.getLocation());
+                counselorBook.setProfile(c.getProfile());
+                userBookVO.setBook(counselorBook);
+                List<Integer> fellowId = userCounselorMapper.getUserCounselorFellow(userCounselor.getCounselorBookId(), userCounselor.getUserId());
+                List<FellowBriefVO> fellowBriefVOS = new ArrayList<>();
+                for(int j= 0; j<fellowId.size(); j++) {
+                    FellowBriefVO fellowBriefVO = new FellowBriefVO();
+                    fellowBriefVO.setFellowId(fellowId.get(j));
+                    Fellow f = fellowMapper.selectById(fellowId.get(j));
+                    fellowBriefVO.setNickname(f.getNickname());
+                    fellowBriefVO.setNote(f.getNote());
+                    fellowBriefVOS.add(fellowBriefVO);
+                }
+                userBookVO.setUserFellow(fellowBriefVOS);
                 res.add(userBookVO);
             }
         }

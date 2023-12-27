@@ -4,7 +4,9 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.example.hci.VO.ArticleBriefVO;
 import com.example.hci.controller.dto.ArticleListDTO;
 import com.example.hci.dao.ArticleMapper;
+import com.example.hci.dao.EventBookMapper;
 import com.example.hci.dao.dto.Article;
+import com.example.hci.dao.dto.EventBook;
 import com.example.hci.service.IArticleService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
@@ -20,6 +22,9 @@ public class ArticleServiceImpl extends BaseServiceImpl<ArticleMapper, Article> 
 
     @Resource
     private ArticleMapper mapper;
+
+    @Resource
+    private EventBookMapper eventBookMapper;
     @Override
     public List<ArticleBriefVO> selectArticleList(ArticleListDTO input) {
         QueryWrapper<Article> ew = new QueryWrapper<>();
@@ -29,7 +34,7 @@ public class ArticleServiceImpl extends BaseServiceImpl<ArticleMapper, Article> 
         if(input.getType() != null){
             ew.eq("type", input.getType());
         }
-        List<Article> ret = mapper.selectArticleList(input.getSkip(), ew);
+        List<Article> ret = mapper.selectArticleList(8*input.getSkip(), ew);
         List<ArticleBriefVO> result = new ArrayList<>();
         for(Article article : ret) {
             ArticleBriefVO articleBriefVO = new ArticleBriefVO();
@@ -41,7 +46,12 @@ public class ArticleServiceImpl extends BaseServiceImpl<ArticleMapper, Article> 
 
     @Override
     public Article selectArticle(Integer articleId) {
-        return mapper.selectById(articleId);
+        Article article = mapper.selectById(articleId);
+        if(article.getEventId() != null) {
+            EventBook eventBook = eventBookMapper.selectById(article.getEventId());
+            article.setEventDate(eventBook.getStartTime());
+        }
+        return article;
     }
 
     @Override

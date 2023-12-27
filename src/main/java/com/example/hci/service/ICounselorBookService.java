@@ -1,11 +1,9 @@
 package com.example.hci.service;
 
-import com.example.hci.controller.dto.CounselorBookCancelDTO;
-import com.example.hci.controller.dto.CounselorBookDTO;
-import com.example.hci.controller.dto.CounselorBookListDTO;
-import com.example.hci.controller.dto.CounselorModifyDTO;
+import com.example.hci.controller.dto.*;
 import com.example.hci.dao.dto.CounselorBook;
 
+import javax.xml.crypto.Data;
 import java.util.List;
 
 public interface ICounselorBookService extends BaseService<CounselorBook> {
@@ -16,11 +14,13 @@ public interface ICounselorBookService extends BaseService<CounselorBook> {
 
     void modify(CounselorModifyDTO input);
 
-    void addFellow(Integer userId, Integer counselorBookId, Integer fellowId);
+    void addFellow(FellowModifyDTO input);
 
-    void deleteFellow(Integer userId, Integer counselorBookId, Integer fellowId);
+    void deleteFellow(FellowModifyDTO input);
 
     void cancel(CounselorBookCancelDTO input);
 
-    List<String> date(String type);
+    List<String> date(DateDTO input);
+
+    void finishUserCounselor();
 }

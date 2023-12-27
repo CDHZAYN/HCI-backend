@@ -62,7 +62,7 @@ public class CounselorServiceImpl extends BaseServiceImpl<CounselorMapper, Couns
     @Override
     public List<CounselorBriefVO> selectHomeCounselorList() {
         QueryWrapper<Counselor> ew = new QueryWrapper<>();
-        ew.orderByDesc("rank").last("limit 3");
+        ew.orderByDesc("position").last("limit 3");
         List<Counselor> ret = mapper.selectList(ew);
         List<CounselorBriefVO> result = new ArrayList<>();
         for (Counselor counselor : ret) {

@@ -31,6 +31,10 @@ public class Article extends Entity {
     @TableField("pic")
     private String pic;
 
+    /**
+     * 0 可用
+     * 1 不可用
+     */
     @TableField("isAvailable")
     private Integer isAvailable;
 
@@ -39,4 +43,7 @@ public class Article extends Entity {
 
     @TableField("eventId")
     private Integer eventId;
+
+    @TableField(exist = false)
+    private String eventDate;
 }

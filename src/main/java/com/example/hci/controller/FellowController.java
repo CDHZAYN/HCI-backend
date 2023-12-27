@@ -39,8 +39,8 @@ public class FellowController {
     }
 
     @PostMapping("/delete")
-    public Response deleteFellow(@RequestParam Integer fellowId) {
-        service.removeById(fellowId);
+    public Response deleteFellow(@RequestParam Integer userId, @RequestParam Integer fellowId) {
+        service.deleteFellow(userId, fellowId);
         return Response.buildSuccess();
     }
 }

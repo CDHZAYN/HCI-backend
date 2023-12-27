@@ -35,4 +35,7 @@ public class Fellow extends Entity {
 
     @TableField("note")
     private String note;
+
+    @TableField("deleted")
+    private Integer deleted;
 }

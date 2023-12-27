@@ -13,5 +13,5 @@ public class UserBookVO {
 
     private UserBook userBook;
 
-    private List<Integer> userFellowId;
+    private List<FellowBriefVO> userFellow;
 }

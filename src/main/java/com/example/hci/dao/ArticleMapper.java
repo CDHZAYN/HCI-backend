@@ -9,7 +9,6 @@ import java.util.List;
 
 public interface ArticleMapper extends BaseMapper<Article>{
 
-    @Select("select * from article where 1=1 and ${ew.sqlSegment} and order by date desc limit 5 skip ${skip}")
     List<Article> selectArticleList(@Param("skip") Integer skip, @Param("ew")QueryWrapper<Article> ew);
 
 }

@@ -11,4 +11,14 @@
         and substring(startTime,1,10) = substring(#{date},1,10) and #{date} &lt;= startTime and isAvailable = 0 and counselor_book.name like '%${form}'
         and counselor_book.counselorId = counselor.id;
     </select>
+
+    <select id="getCounselorBookDate" resultType="com.example.hci.dao.dto.CounselorBook">
+        SELECT *
+        FROM counselor_book
+        WHERE counselorId in
+        <foreach collection="counselorId" item="item" index="index" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        and startTime >= NOW() and startTime &lt;= ADDDATE(CURDATE(), 14) AND name like '%${type}' and isAvailable = 0
+    </select>
 </mapper>

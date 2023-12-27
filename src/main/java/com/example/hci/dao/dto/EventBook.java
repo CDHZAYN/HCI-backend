@@ -39,4 +39,7 @@ public class EventBook extends Book {
     @TableField(exist = false)
     private String location;
 
+    @TableField(exist = false)
+    private String profile;
+
 }

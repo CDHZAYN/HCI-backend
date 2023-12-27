@@ -4,6 +4,7 @@ import com.example.hci.common.Response;
 import com.example.hci.controller.dto.EventBookCancelDTO;
 import com.example.hci.controller.dto.EventBookDTO;
 import com.example.hci.controller.dto.EventModifyDTO;
+import com.example.hci.controller.dto.FellowModifyDTO;
 import com.example.hci.dao.dto.EventBook;
 import com.example.hci.service.IEventBookService;
 import org.springframework.web.bind.annotation.*;
@@ -19,8 +20,8 @@ public class EventBookController {
     private IEventBookService service;
 
     @GetMapping("/list")
-    public Response getEventBookList(@RequestParam String date) {
-        List<EventBook> result = service.getEventBookList(date);
+    public Response getEventBookList(@RequestParam Integer userId, @RequestParam String date) {
+        List<EventBook> result = service.getEventBookList(userId, date);
         return Response.buildSuccess(result);
     }
 
@@ -37,19 +38,19 @@ public class EventBookController {
     }
 
     @PostMapping("/addFellow")
-    public Response addFellow(@RequestParam Integer userId, @RequestParam Integer eventId, @RequestParam Integer fellowId){
-        service.addFellow(userId, eventId, fellowId);
+    public Response addFellow(@RequestBody FellowModifyDTO input){
+        service.addFellow(input);
         return Response.buildSuccess();
     }
 
     @PostMapping("/deleteFellow")
-    public Response deleteFellow(@RequestParam Integer userId, @RequestParam Integer eventId, @RequestParam Integer fellowId){
-        service.deleteFellow(userId, eventId, fellowId);
+    public Response deleteFellow(@RequestBody FellowModifyDTO input){
+        service.deleteFellow(input);
         return Response.buildSuccess();
     }
 
     @PostMapping("/cancel")
-    public Response cancel(EventBookCancelDTO input){
+    public Response cancel(@RequestBody  EventBookCancelDTO input){
         service.cancel(input);
         return Response.buildSuccess();
     }

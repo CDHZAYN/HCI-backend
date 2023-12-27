@@ -6,6 +6,7 @@ import com.example.hci.VO.BookRecordVO;
 import com.example.hci.VO.UserBookVO;
 import com.example.hci.VO.UserVO;
 import com.example.hci.common.Response;
+import com.example.hci.controller.dto.BookRecordDTO;
 import com.example.hci.controller.dto.LoginDTO;
 import com.example.hci.controller.dto.RegisterDTO;
 import com.example.hci.controller.dto.UserChangePwdDTO;
@@ -52,9 +53,9 @@ public class UserController {
         return Response.buildSuccess();
     }
 
-    @GetMapping("/bookRecord")
-    public Response getBookRecord(@RequestParam Integer userId, @RequestParam Integer type, @RequestParam String date, @RequestParam String bookType) {
-        BookRecordVO bookRecord = service.getBookRecord(userId, type, date, bookType);
+    @PostMapping("/bookRecord")
+    public Response getBookRecord(@RequestBody BookRecordDTO input) {
+        BookRecordVO bookRecord = service.getBookRecord(input.getUserId(), input.getType(), input.getDate(), input.getBookType());
         return Response.buildSuccess(bookRecord);
     }
 }

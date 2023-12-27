@@ -1,10 +1,7 @@
 package com.example.hci.controller;
 
 import com.example.hci.common.Response;
-import com.example.hci.controller.dto.CounselorBookCancelDTO;
-import com.example.hci.controller.dto.CounselorBookDTO;
-import com.example.hci.controller.dto.CounselorBookListDTO;
-import com.example.hci.controller.dto.CounselorModifyDTO;
+import com.example.hci.controller.dto.*;
 import com.example.hci.dao.dto.CounselorBook;
 import com.example.hci.service.ICounselorBookService;
 import org.apache.ibatis.annotations.Param;
@@ -38,14 +35,14 @@ public class CounselorBookController {
         return Response.buildSuccess();
     }
     @PostMapping("/addFellow")
-    public Response addFellow(@RequestParam Integer userId, @RequestParam Integer counselorBookId, @RequestParam Integer fellowId) {
-        service.addFellow(userId, counselorBookId, fellowId);
+    public Response addFellow(@RequestBody FellowModifyDTO input) {
+        service.addFellow(input);
         return Response.buildSuccess();
     }
 
     @PostMapping("/deleteFellow")
-    public Response deleteFellow(@RequestParam Integer userId, @RequestParam Integer counselorBookId, @RequestParam Integer fellowId) {
-        service.deleteFellow(userId, counselorBookId, fellowId);
+    public Response deleteFellow(@RequestBody FellowModifyDTO input){
+        service.deleteFellow(input);
         return Response.buildSuccess();
     }
 
@@ -55,9 +52,10 @@ public class CounselorBookController {
         return Response.buildSuccess();
     }
 
-    @GetMapping("/date")
-    public Response cancel(@RequestParam String type){
-        List<String> dates = service.date(type);
+    @PostMapping("/date")
+    public Response date(@RequestBody DateDTO input){
+        List<String> dates = service.date(input);
         return Response.buildSuccess(dates);
     }
+
 }

@@ -20,6 +20,7 @@ create table `fellow` (
     `birthMonth` INTEGER default null comment '出生月份',
     `vocation` varchar(32) default null comment '职务',
     `note` varchar(256) default null comment '备注',
+    `deleted` int(1) default 0 comment '是否被删除',
     primary key (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 comment='同伴信息';
 

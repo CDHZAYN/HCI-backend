@@ -11,4 +11,6 @@ public interface IFellowService extends BaseService<Fellow> {
 
     Fellow getFellowDetail(Integer userId, Integer fellowId);
 
+    void deleteFellow(Integer userId, Integer fellowId);
+
 }

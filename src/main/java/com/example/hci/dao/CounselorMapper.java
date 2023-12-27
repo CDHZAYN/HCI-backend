@@ -18,6 +18,6 @@ public interface CounselorMapper extends BaseMapper<Counselor> {
     @Select("select field from counselor_field where counselorId = ${counselorId}")
     List<String> getCounselorField(@Param("counselorId") Integer counselorId);
 
-    @Select("select form form counselor_form where counselorId = ${counselorId}")
+    @Select("select form from counselor_form where counselorId = ${counselorId}")
     List<String> getCounselorForm(@Param("counselorId") Integer counselorId);
 }

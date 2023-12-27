@@ -21,6 +21,6 @@
         <if test="ew.nonEmptyOfWhere">AND ${ew.sqlSegment}</if>
         <if test=" fieldLabel != null">  and #{fieldLabel} in (select counselor_field.field from counselor_field where counselor.id = counselor_field.counselorId)</if>
         <if test=" form != null"> and #{form} in (select counselor_form.form from counselor_form where counselor.id = counselor_form.counselorId) </if>
-        order by position desc limit ${skip},8;
+        order by id desc limit ${skip},8;
     </select>
 </mapper>

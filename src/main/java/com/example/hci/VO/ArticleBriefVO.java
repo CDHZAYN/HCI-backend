@@ -5,6 +5,8 @@ import lombok.Data;
 @Data
 public class ArticleBriefVO {
 
+    private  Integer id;
+
     private String title;
 
     private String subtitle;

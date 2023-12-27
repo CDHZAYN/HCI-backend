@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.hci.dao.ArticleMapper">
+    <select id="selectArticleList" resultType="com.example.hci.dao.dto.Article">
+        select *
+        from article
+        where 1=1
+        <if test="ew.nonEmptyOfWhere"> AND ${ew.sqlSegment} </if>
+        order by date desc limit ${skip}, 8
+    </select>
+</mapper>
